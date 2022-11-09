@@ -1,0 +1,74 @@
+create table patient(P_id number(6) primary key,
+P_Name varchar2(50) not null,P_gender varchar2(20));
+
+create table doctor(D_id number(6) primary key,
+D_name varchar2(50) not null,affilation varchar2(20));
+
+create table time(da_id number(6) primary key,
+day varchar2(20) not null, month varchar2(15),year number(5));
+
+create table location(L_id number(6) primary key,
+L_name varchar2(20) not null,city_id number(10));
+
+create table city(city_id number(20) primary key,
+city_name varchar2(20) not null,state varchar2(20));
+
+create table fact_hosp(P_id number references patient(P_id),
+D_id number references doctor(D_id),
+da_id number references time(da_id),
+L_id number references location(L_id),
+charge number(6) not null,
+age number(4) not null);
+
+
+insert into Patient values(1,'Suryaprakash Singh','M');
+insert into Patient values(2,'Ritesh Chheda','M');
+insert into Patient values(3,'Jitendra Choudary','M');
+insert into Patient values(4,'Anjali Roy','F');
+insert into Patient values(5,'Riya Soni','F');
+
+insert into doctor values(10,'Shubham Nakashe','MBBS');
+insert into doctor values(11,'Saurabh Mishra','BDS');
+insert into doctor values(12,'Rohit Sharma','MBBS');
+insert into doctor values(13,'Anushka Sable','BDS');
+insert into doctor values(14,'Pravin Choudary','Surgeon');
+
+insert into time values(1001,'25-Oct-2022','Oct',2022);
+insert into time values(1002,'6-Jul-2020','Jul',2020);
+insert into time values(1003,'11-Jul-2018','Jul',2018);
+insert into time values(1004,'13-Mar-2015','Mar',2015);
+insert into time values(1005,'1-Jan-2017','Jan',2017);
+
+insert into location values(101,'Mumbai',10001);
+insert into location values(102,'Pune',10002);
+insert into location values(103,'Delhi',10003);
+insert into location values(104,'Bangalore',10004);
+insert into location values(105,'Kolkata',10005);
+
+alter table fact_hosp add No_of_discharge number(10);
+insert into fact_hosp values(1,10,1001,101,10000,30,10);
+insert into fact_hosp values(1,11,1004,102,15000,32,9);
+insert into fact_hosp values(2,11,1003,103,12000,31,8);
+insert into fact_hosp values(2,13,1002,102,11000,28,6);
+insert into fact_hosp values(3,12,1005,105,11500,29,7);
+insert into fact_hosp values(4,14,1001,103,10500,27,5);
+
+select d_name,No_of_discharge from fact_hosp inner join doctor 
+on fact_hosp.d_id=doctor.d_id where d_name='Rohit Sharma';
+
+select d_name,p_name,No_of_discharge from ((fact_hosp inner join doctor 
+on fact_hosp.d_id=doctor.d_id) join patient 
+on fact_hosp.P_id=patient.p_id) where d_name='Rohit Sharma';
+
+select year,sum(no_of_discharge) from (fact_hosp natural join doctor) join time 
+on fact_hosp.da_id=time.da_id where d_name='Anushka Sable' group by year;
+
+select month as Q2022,sum(no_of_discharge) 
+from (fact_hosp natural join doctor) join time 
+on fact_hosp.da_id=time.da_id where year=2022 group by month;
+
+
+
+
+
+

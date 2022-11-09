@@ -1,0 +1,53 @@
+create table fact(
+Branch varchar(25),
+No_Stud int,
+Class int,
+YR int);
+
+
+
+
+INSERT INTO fact VALUES ('Kandivali','650','10','2018');
+INSERT INTO fact VALUES ('Vasai','870','8','2018');
+INSERT INTO fact VALUES ('Kandivali','650','10','2018');
+INSERT INTO fact VALUES ('Kandivali','650','10','2018');
+INSERT INTO fact VALUES ('Vasai','870','8','2018');
+INSERT INTO fact VALUES ('Vasai','870','8','2018');
+INSERT INTO fact VALUES ('Vasai','870','9','2018');
+INSERT INTO fact VALUES ('Malad','670','9','2018');
+INSERT INTO fact VALUES ('Malad','670','9','2018');
+INSERT INTO fact VALUES ('Andheri','450','10','2018');
+INSERT INTO fact VALUES ('Andheri','450','10','2018');
+INSERT INTO fact VALUES ('Andheri','450','10','2018');
+INSERT INTO fact VALUES ('Jogeshwari','510','10','2011');
+INSERT INTO fact VALUES ('Jogeshwari','510','10','2011');
+INSERT INTO fact VALUES ('Jogeshwari','510','10','2011');
+INSERT INTO fact VALUES ('Jogeshwari','510','10','2011');
+INSERT INTO fact VALUES ('Santacruz','600','10','2012');
+INSERT INTO fact VALUES ('Santacruz','600','10','2012');
+INSERT INTO fact VALUES ('Santacruz','600','10','2012');
+INSERT INTO fact VALUES ('Santacruz','600','10','2012');
+
+
+
+#Slice:
+select distinct branch,no_stud,class from fact where yr=2018;
+
+#Dice:
+select * from fact where (class=10 or class=9) and 
+(branch ='Kandivali' or branch ='Malad');
+
+#Rollup:
+select distinct branch,yr,sum(no_stud) from fact group by rollup(branch,yr);
+
+#Pivot:
+
+select branch , yr,9
+from fact
+pivot
+(
+sum(no_stud) for class in (9,10)
+);
+
+
+
